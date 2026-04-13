@@ -13,15 +13,32 @@
     <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
 
     <label for="blur">Blur:</label>
-    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+    <input id="blur" type="range" name="blur" min="0" max="25" value="0" data-sizing="px">
 
     <label for="base">Base Color</label>
     <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img src="https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&h=500&fit=crop&ixid=eyJhcHBfaWQiOjF9">
 
   <style>
+
+    :root{
+      --img-border-spacing:0rem;
+      --img-blur:0rem;
+      --base-color:#000;
+    }
+
+    .hl{
+      color: var(--base-color);
+    }
+
+    img{
+      border-style: solid;
+      border-width: var(--img-border-spacing);
+      border-color: var(--base-color);
+      filter: blur(var(--img-blur));
+    }
 
     /*
       misc styles, nothing to do with CSS variables
@@ -45,7 +62,7 @@
     }
   </style>
 
-  <script>
+  <script src="script.js" defer>
   </script>
 
 </body>
