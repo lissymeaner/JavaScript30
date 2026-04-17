@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Array Cardio 💪💪</title>
   <link rel="icon" href="https://fav.farm/🔥" />
+  <style>@media (prefers-color-scheme:dark){body {background-color: #000; color: #fff;}}</style>
 </head>
 <body>
   <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
@@ -25,18 +26,31 @@
       { text: 'Nice Nice Nice!', id: 542328 }
     ];
 
+    const date = new Date();
+    const currentYear = date.getFullYear();
+    console.log(currentYear);
+
+
     // Some and Every Checks
+    const atLeast19 = (element) => (currentYear - element.year) >= 19;
     // Array.prototype.some() // is at least one person 19 or older?
+    console.log(people.some(atLeast19)); // Outputs true
     // Array.prototype.every() // is everyone 19 or older?
+    console.log(people.every(atLeast19)); // Outputs false
 
     // Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
     // find the comment with the ID of 823423
+    const commentWithId = (comment) => comment.id == 823423;
+    const comment = comments.find(commentWithId);
 
     // Array.prototype.findIndex()
     // Find the comment with this ID
+    const commentIndex = comments.findIndex(commentWithId);
+    console.log(commentIndex);
     // delete the comment with the ID of 823423
-
+    comments.splice(commentIndex, 1);
+    for (comm of comments) {console.log(`(ID: ${comm.id}), \'${comm.text}\'`)}
   </script>
 </body>
 </html>
