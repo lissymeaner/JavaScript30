@@ -19,28 +19,71 @@
     }
 
     // Regular
+    console.log('Hello');
 
     // Interpolated
+    console.log('Hello I am a %s string!', 'good');
+    console.log('Hello I am a %s string!', 'godly');
 
     // Styled
+    console.log('%c I am some great text', 'font-size:50px;');
+    console.log('%c I, too, am some great text- Oh wait, noooo why am I small?', 'font-size:8px; font-style:italic;');
 
     // warning!
+    console.warn(`Oi! Don't be a %cmeanie.`, 'font-style:italic;');
 
     // Error :|
+    console.error('What did I say about you not being a meanie?');
 
     // Info
+    console.info('Here is what a %creal', 'font-style:italic;', 'text looks like.');
 
     // Testing
+    console.assert((dogs.length == 2), `There are ${dogs.length} dogs.`);
+    console.assert((dogs.length == 3), `There are ${dogs.length} dogs.`);
 
     // clearing
+    // console.clear(); // Will show a message saying the console has been cleared
 
     // Viewing DOM Elements
+    const p = document.querySelector('p');
+
+    console.log(p);
 
     // Grouping together
+    dogs.forEach(dog => {
+      // console.group(`${dog.name}`.toUpperCase());
+      console.groupCollapsed(`${dog.name}`.toUpperCase());
+      console.log(`This is ${dog.name}.`);
+      console.log(`${dog.name} is ${dog.age} years old.`);
+      console.log(`${dog.name} is ${(dog.age)*7} in dog years.`);
+      console.groupEnd(`${dog.name}`.toUpperCase());
+    });
 
     // counting
 
+    dogs[1].name = dogs[1].name.split('');
+    console.log(dogs[1].name);
+
+      
+    for (i = 1; i <= 10; i++) {
+      console.count('Hello');
+      dogs[1].name.forEach(letter => {
+        console.count('Hugo');
+      });
+    }
+    
     // timing
+    console.time("fetching data");
+    fetch('https://api.github.com/users/lissymeaner')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd("fetching data");
+        console.log(data);
+      });
+
+      dogs[1].name = "Hugo";
+      console.table(dogs);
 
   </script>
 </body>
