@@ -7,7 +7,7 @@
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
 <body>
-
+  <canvas></canvas>
   <form class="search-form">
     <input type="text" class="search" placeholder="City or State">
     <ul class="suggestions">
@@ -15,8 +15,47 @@
       <li>or a state</li>
     </ul>
   </form>
+<script>
+  document.addEventListener( "DOMContentLoaded", async() => {
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const response = await fetch(endpoint);
+
+    let cities = [];
+    cities = await response.json();
+    
+    let query = document.querySelector('.search').value;
+    
+    const suggestionsList = document.querySelector('.suggestions');
+    
+    function clear() {while(suggestionsList.firstChild){suggestionsList.removeChild(suggestionsList.lastChild);}}
+    
+    clear();
+    
+    function search() {
+      query = document.querySelector('.search').value;
+      let regex = new RegExp(query, 'gi');
+      
+      clear();
+      if (query != "") { // DEBUG: console.log(query);
+        for (city of cities){ // DEBUG: console.log(city.city);
+          cityWithoutWhitespace = city.city.replace(/\s+/g, '');
+          stateWithoutWhitespace = city.state.replace(/\s+/g, '');
+          if (regex.test(city.city) || regex.test(cityWithoutWhitespace) || regex.test(city.state) || regex.test(stateWithoutWhitespace)) { 
+            const cityListItem = document.createElement("li");
+            cityListItem.innerHTML = `${city.city}, ${city.state}`;
+            suggestionsList.appendChild(cityListItem);}
+          }
+        }
+      else { // DEBUG: console.log(query);
+        clear();
+      }
+    }
+      
+      document.addEventListener("input",search);
+  });
+</script>
 <script src="script.js">
-  
+
 </script>
 <body>
 </html>

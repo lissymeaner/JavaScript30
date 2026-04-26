@@ -1,49 +1,23 @@
-// Variables
-
-// Div tag with .keys class
-const keys = document.querySelector(".keys");
-const individualKeys = keys.children;
-// console.log(keys); // Debug
-
-// Array of audio tags
-const audios = document.querySelectorAll("audio");
-// console.log(audios); // Debug
-
-
-function func(event){
-    switch (event.key) {
-        case "a":
-        case "s":
-        case "d":
-        case "f":
-        case "g":
-        case "h":
-        case "j":
-        case "k":
-        case "l":
-            for (i = 0; i <= (individualKeys.length-1); i++) {
-                let key = individualKeys[i];
-                if (key.firstElementChild.innerHTML == event.key.toUpperCase()){
-                    if (key.dataset.role == audios[i].dataset.role){
-                        key.classList.add('playing');
-                        audios[i].play();
-                    }
-                }
-            }
-            break;
-        default:
-            break;
-    }
+function removeTransition(e){
+    if (e.propertyName !== 'transform') return; // if the event target does not have a transform property assigned to them, return nothing,
+    e.target.classList.remove('playing'); // otherwise, remove the .playing class.
 }
 
-function func2(event) {
-    for (i = 0; i <= (individualKeys.length-1); i++) {
-        let key = individualKeys[i];
-        if (key.classList.contains('playing')){
-            key.classList.remove('playing');
-        }
-    }
+function playSound(e){
+    // Variables
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    
+    // console.log(audio); // Debug
+    // console.log(key); // Debug
+
+    if (!audio) return;
+
+    key.classList.add('playing');
+    audio.currentTime = 0; // Start audio from the beginning
+    audio.play();
 }
 
-document.addEventListener("keydown",func);
-document.addEventListener("keyup", func2);
+const keys = Array.from(document,querySelectorAll('.key'));
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+window.addEventListener("keydown",func);
