@@ -49,3 +49,25 @@ kbd {
   letter-spacing: .1rem;
   color: #ffc600;
 }
+
+.recorder{
+  background-color: grey;
+  position:absolute;
+  bottom: 0;
+  left: 0;
+  width: fit-content;
+  display: inline;
+  padding: .7rem .7rem .7rem .7rem;
+  font-size: 2rem;
+}
+
+.recorder > span:nth-child(1) {
+  color: red;
+  margin-right: .7rem;
+  user-select: none;
+  cursor: pointer;
+}
+
+.recorder > span, .recorder > span.on{
+  color:white;
+}

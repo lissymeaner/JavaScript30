@@ -47,8 +47,20 @@
   <ul id="bands"></ul>
 
 <script>
-const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+  const bandsList = document.querySelector("#bands");
+  const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+  
+  function removeArticle(bandName){
+    return bandName.replace(/^(a |the |an )/i, "").trim();
+  }
 
+  // * NEW WAY TO RETURN: Ternary operator, only use if if you want to return something only.
+  // If band1 is sorted alphabetically after than band2, then return 1; otherwise return -1.
+  const sortedBands = bands.sort((band1, band2) => (removeArticle(band1) > removeArticle(band2) ? 1 : -1));
+
+  // console.log(sortedBands); // DEBUG
+
+  bandsList.innerHTML = sortedBands.map(band => `<li>${band}</li>`).join('');
 
 </script>
 

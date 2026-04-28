@@ -18,6 +18,18 @@ function playSound(e){
     audio.play();
 }
 
-const keys = Array.from(document,querySelectorAll('.key'));
+const keys = Array.from(document.querySelectorAll('.key'));
 keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-window.addEventListener("keydown",func);
+window.addEventListener("keydown",playSound);
+
+const recorder = document.querySelector('.recorder');
+const control = recorder.firstElementChild;
+
+control.addEventListener('click', () => {
+    control.classList.toggle('on');
+    if (control.classList.contains('on')){
+    control.innerHTML = '⏹';
+    } else { control.innerHTML = '⏺'}
+    // console.log(control); // DEBUG
+});
+
