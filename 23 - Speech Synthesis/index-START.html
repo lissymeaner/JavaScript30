@@ -30,12 +30,55 @@
     </div>
 
 <script>
+  // Variables
   const msg = new SpeechSynthesisUtterance();
   let voices = [];
   const voicesDropdown = document.querySelector('[name="voice"]');
   const options = document.querySelectorAll('[type="range"], [name="text"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+
+  // Retrieve value from text area and assign as text for voice
+  msg.text = document.querySelector('[name="text"]').value;
+
+  // Function to populate voice options in the dropdown menu.
+  function populateVoices() {
+    voices = this.getVoices();
+    voicesDropdown.innerHTML = voices
+      .filter(voice => voice.lang.includes('en'))
+      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
+      .join('');
+  }
+
+  // Function to set the voice chosen by the user
+  function setVoice() {
+    msg.voice = voices.find(voice => voice.name === this.value);
+    toggle();
+  }
+
+  // Function to toggle the voice on or off
+  // depending on the startOver variable.
+  function toggle(startOver = true) {
+    speechSynthesis.cancel();
+    if (startOver) {
+      speechSynthesis.speak(msg);
+    }
+  }
+
+  // Function that is called when an option
+  // inside the dropdown is set by the user.
+  function setOption() {
+    // console.log(this.name, this.value); // Debug
+    msg[this.name] = this.value;
+    toggle();
+  }
+
+  // Event listeners
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+  voicesDropdown.addEventListener('change', setVoice);
+  options.forEach(option => option.addEventListener('change', setOption));
+  speakButton.addEventListener('click', toggle);
+  stopButton.addEventListener('click', () => toggle(false)); // Only use lambda functions in smaller-scale projects. They take longer to load apparently.
 </script>
 
 </body>

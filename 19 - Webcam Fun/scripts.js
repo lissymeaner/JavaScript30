@@ -24,7 +24,7 @@ function paintToCanvas() {
     canvas.width = width;
     canvas.height = height;
 
-    setInterval(() => {
+    return setInterval(() => {
         ctx.drawImage(video, 0, 0, width, height);
         
         // Red filter
@@ -46,10 +46,18 @@ function takePhoto() {
     const link = document.createElement('a');
     link.href = data;
     link.setAttribute('download', 'pretty');
-    link.textContent = 'Download Image';
-    link.innerHTML = `<img src="${data}" alt="Pretty Woman">`;
+    link.innerHTML = `<img src="${data}" alt="Pretty Woman" />`;
     strip.insertBefore(link, strip.firstChild);
     // 16:10
+}
+
+function redEffect(pixels) {
+  for (let i = 0; i < pixels.data.length; i+=4) {
+    pixels.data[i + 0] = pixels.data[i + 0] + 200; // RED
+    pixels.data[i + 1] = pixels.data[i + 1] - 50; // GREEN
+    pixels.data[i + 2] = pixels.data[i + 2] * 0.5; // Blue
+  }
+  return pixels;
 }
 
 function aberrationRGB(pixels) {
@@ -79,9 +87,10 @@ function greenScreen(pixels) {
             && blue >= levels.bmin
             && red <= levels.rmax
             && green < levels.gmax
-            && blue <= levels.bmax ) {
-                pixels.data[i+3] = 0;
-            }
+            && blue <= levels.bmax )
+        {
+            pixels.data[i+3] = 0;
+        }
     }
 
     return pixels;

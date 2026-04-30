@@ -27,7 +27,38 @@
     </div>
 
   <script>
-    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    // Variables
+    const triggers = document.querySelectorAll('a');
+    const highlight = document.createElement('span');
+
+    // Add highlight class to words to highlight
+    highlight.classList.add('highlight');
+    document.body.appendChild(highlight);
+
+    // Function for pointing to and moving highlights
+    // ready for mouse pointing event from user.
+    function highlightLink() {
+      const linkCoords = this.getBoundingClientRect();
+      // console.log(linkCoords); // DEBUG
+
+      // Coordinates object
+      const coords = {
+        width: linkCoords.width,
+        height: linkCoords.height,
+        top: linkCoords.top + window.scrollY,
+        left: linkCoords.left + window.scrollX
+      };
+
+      // This will change upon an event happening
+      highlight.style.width = `${coords.width}px`;
+      highlight.style.height = `${coords.height}px`;
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`;
+
+    }
+
+    // Event listener to trigger the highlightLink function on the
+    // triggers array of selected anchor elements.
+    triggers.forEach(a => a.addEventListener('mouseenter', highlightLink));
   </script>
 </body>
 </html>
