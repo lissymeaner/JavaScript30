@@ -1,7 +1,9 @@
 const image = document.querySelector('img');
+const imagePicker = document.querySelector('#image');
 const spacingSlider = document.querySelector('#spacing');
 const blurSlider = document.querySelector('#blur');
 const baseColorPicker = document.querySelector('#base');
+const resetImageButton = document.querySelector('#reset');
 const element = document.documentElement;
 
 let spacingVar = getComputedStyle(element).getPropertyValue("--img-border-spacing");
@@ -15,6 +17,15 @@ console.log(blurVar); // Debug
 console.log(baseColorVar); // Debug
 
 /////////////////////////////////// Changing values ///////////////////////////////////
+
+// Changing image
+imagePicker.addEventListener('cancel', null);
+
+imagePicker.addEventListener('change', () => {imagePicker.files.length === 1 && image.src; image.src = URL.createObjectURL(imagePicker.files[0])});
+
+resetImageButton.addEventListener('click', () => {
+    image.src = 'https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=800&h=500&fit=crop&ixid=eyJhcHBfaWQiOjF9';
+});
 
 // Changing spacing
 function changeSpacing(event) {

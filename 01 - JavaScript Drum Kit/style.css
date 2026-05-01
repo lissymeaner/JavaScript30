@@ -71,3 +71,7 @@ kbd {
 .recorder > span, .recorder > span.on{
   color:white;
 }
+
+#recordedAudio{
+  display: inline;
+}
