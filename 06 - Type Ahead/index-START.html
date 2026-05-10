@@ -16,46 +16,60 @@
     </ul>
   </form>
 <script>
-  document.addEventListener( "DOMContentLoaded", async() => {
-    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
-    const response = await fetch(endpoint);
+  // Constants
+  // 1. URL source of the JSON file
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  // 2. List of cities.
+  const cities = [];
+  // 3. List of suggestions from HTML
+  const suggestionsList = document.querySelector('.suggestions');
 
-    let cities = [];
-    cities = await response.json();
-    
-    let query = document.querySelector('.search').value;
-    
-    const suggestionsList = document.querySelector('.suggestions');
-    
-    function clear() {while(suggestionsList.firstChild){suggestionsList.removeChild(suggestionsList.lastChild);}}
-    
-    clear();
-    
-    function search() {
-      query = document.querySelector('.search').value;
-      let regex = new RegExp(query, 'gi');
-      
-      clear();
-      if (query != "") { // DEBUG: console.log(query);
-        for (city of cities){ // DEBUG: console.log(city.city);
-          cityWithoutWhitespace = city.city.replace(/\s+/g, '');
-          stateWithoutWhitespace = city.state.replace(/\s+/g, '');
-          if (regex.test(city.city) || regex.test(cityWithoutWhitespace) || regex.test(city.state) || regex.test(stateWithoutWhitespace)) { 
-            const cityListItem = document.createElement("li");
-            cityListItem.innerHTML = `${city.city}, ${city.state}`;
-            suggestionsList.appendChild(cityListItem);}
-          }
-        }
-      else { // DEBUG: console.log(query);
-        clear();
-      }
-    }
-      
-      document.addEventListener("input",search);
-  });
-</script>
-<script src="script.js">
+  // Variables
+  let searchInput = document.querySelector('.search');
 
+  fetch(endpoint) // Fetch data from endpoint, return a promise
+  .then(blob => blob.json()) // convert promised response to JSON promsie
+  .then(data => cities.push(...data)); // and push JSON data onto cities array.
+  console.log(cities);
+  
+  // Functions
+  
+  // 1. Finds closest matches of a user's query.
+  function findMatches(wordToMatch, cities) {
+    return cities.filter(place => {
+      const regex = new RegExp(wordToMatch, 'gi');
+      return place.city.match(regex) || regex.test(place.city.replace(/\s+/g, '')) || regex.test(place.state.replace(/\s+/g, '')) || place.state.match(regex)
+    });
+  }
+
+  // 2. Converts a number into a numerical string with commas
+  function numberWithCommas(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');}
+  
+  // 3. Displays the closest matches
+  function displayMatches() {
+    const matchArray = findMatches(this.value, cities);
+    // Maps HTML from matchArray an array of list item nodes.
+    const html = matchArray.map(place => {
+      const regex = new RegExp(this.value, 'gi');
+      const cityName = place.city.replace(regex, `<span class="h1">${this.value}</span>`);
+      const stateName = place.state.replace(regex, `<span class="h1">${this.value}</span>`);
+      return `
+        <li>
+          <span class="name">${cityName}, ${stateName}</span>
+          <span class="population">${numberWithCommas(place.population)}</span>
+        </li>
+      `;
+    }).join('');
+    // Fills the html content inside the .suggestions list.
+    suggestionsList.innerHTML = html;
+  }
+
+  // Event listeners
+  // 1. Updates matches displayed if value of searchInput changes.
+  searchInput.addEventListener('change', displayMatches);
+  // 2. Updates matches displayed when a key is released.
+  searchInput.addEventListener('keyup', displayMatches);
 </script>
+<script src="script.js"></script>
 <body>
 </html>

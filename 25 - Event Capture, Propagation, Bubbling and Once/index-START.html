@@ -50,7 +50,7 @@
   function logText(e) {
     console.log(this.classList.value);
     e.stopPropagation(); // stops bubbling
-    // console.log(this);
+    // console.log(this); // DEBUG
   }
 
   document.body.addEventListener('click', logText);

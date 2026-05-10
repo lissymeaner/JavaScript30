@@ -9,7 +9,7 @@ let mediaRecorder;
 function getVideo() {
     navigator.mediaDevices.getUserMedia( {video: true, audio: false})
     .then(localMediaStream => {
-        console.log(localMediaStream);
+        // console.log(localMediaStream); // DEBUG
         video.srcObject = localMediaStream;
         video.play();
     })

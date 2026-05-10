@@ -1,3 +1,8 @@
+// TODO:
+// - Document constants
+// - comment on each event listener.
+
+// Constants
 const player = document.querySelector('.player');
 const video = player.querySelector('.viewer');
 const progress = player.querySelector('.progress');
@@ -8,32 +13,37 @@ const sliders = player.querySelectorAll('.player__slider');
 const browse = document.querySelector('#browse');
 const reset = document.querySelector('#reset');
 
+// Variables
 let newCurrentTime = 0;
 
-console.log(playButton);
-console.log(video.paused);
+// console.log(playButton); // DEBUG
+// console.log(video.paused); // DEBUG
 
-// Toggles state of video playback between play and pause
+// Functions
+/** Toggles state of video playback between play and pause. */
 function togglePlay() {
     const method = video.paused ? 'play' : 'pause';
     video[method]();
 }
 
-// Updates button based on playback state
+/** Updates button based on playback state. */
 function updateButton() {
     const icon = this.paused ? '►' : '⏸';
     playButton.textContent = icon;
 }
 
-function handleRangeUpdate() {
+/** Handles an update to a range. */
+function updateRange() {
     video[this.name] = this.value;
 }
 
+/** Handles an update to a progress bar. */
 function updateProgressBar() {
     const progressPercentage = (video.currentTime / video.duration)*100;
     progressBar.style.flexBasis = `${progressPercentage}%`;
 }
 
+/** Functionality to skip a video. */
 function skip() {
     newCurrentTime = video.currentTime + parseFloat(seekButton.dataset.skip);
     if (video.duration >= newCurrentTime >= 0) { video.currentTime = newCurrentTime; }
@@ -41,11 +51,13 @@ function skip() {
     else { video.currentTime = 0;}
 }
 
+/** Functionality to scrub (drag to seek) a desired currentTime of a video. */
 function scrub(e) {
     const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration; 
     video.currentTime = scrubTime;
 }
 
+/** Functionality to change a video source. */
 function changeVideo() {
     const files = browse.files;
 
@@ -58,6 +70,7 @@ function changeVideo() {
     updateButton();
 }
 
+// Event listeners
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
 video.addEventListener('pause', updateButton);
@@ -65,15 +78,8 @@ video.addEventListener('timeupdate', updateProgressBar);
 
 playButton.addEventListener('click', togglePlay);
 seekButtons.forEach(button => button.addEventListener('click', skip));
-sliders.forEach(slider => slider.addEventListener("change", handleRangeUpdate));
-sliders.forEach(slider => slider.addEventListener("mousemove", handleRangeUpdate));
-
-// Other code
-// video.addEventListener('ended', () => {
-//     playButton.classList.toggle('playing');
-//     playButton.innerHTML = '►';
-//     console.log('Your video is has ended.');
-// });
+sliders.forEach(slider => slider.addEventListener("change", updateRange));
+sliders.forEach(slider => slider.addEventListener("mousemove", updateRange));
 
 let mousedown = false;
 progress.addEventListener('click', scrub);
@@ -86,6 +92,7 @@ browse.addEventListener('change', changeVideo);
 reset.addEventListener('click', changeVideo);
 
 // Other code
+
 // function switchToPlaying() {
 //     playButton.classList.toggle('playing');
 //     playButton.innerHTML = '⏸';
@@ -133,3 +140,9 @@ reset.addEventListener('click', changeVideo);
 //     }
 //     else {return false;}
 // }
+
+// video.addEventListener('ended', () => {
+//     playButton.classList.toggle('playing');
+//     playButton.innerHTML = '►';
+//     console.log('Your video is has ended.');
+// });

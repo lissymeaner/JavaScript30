@@ -1,8 +1,19 @@
+/**
+ * Function for removing transitions from a key.
+ * @param {*} e 
+ * @returns 
+ */
 function removeTransition(e){
     if (e.propertyName !== 'transform') return; // if the event target does not have a transform property assigned to them, return nothing,
     e.target.classList.remove('playing'); // otherwise, remove the .playing class.
 }
 
+/**
+ * 
+ * Function for playing sound.
+ * @param {*} e Represents the event occurring.
+ * @returns Nothing if there is audio with a data-key matching with the key pressed, otherwise null
+ */
 function playSound(e){
     // Variables
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
@@ -19,8 +30,11 @@ function playSound(e){
 }
 
 const keys = Array.from(document.querySelectorAll('.key'));
+// Event listeners:
+// #1 is for when transition on each key element ends.
 keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-window.addEventListener("keydown",playSound);
+// #2 is for when a key is pressed down.
+window.addEventListener("keydown", playSound);
 
 // const recorder = document.querySelector('.recorder');
 // const control = recorder.firstElementChild;
